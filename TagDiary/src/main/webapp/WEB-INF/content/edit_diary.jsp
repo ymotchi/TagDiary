@@ -38,28 +38,43 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript">
+$.ajaxSettings.traditional = true;
+
 $(function() {
-	$("#toggle-put").button();
-	$("#canvas").click(function(e) {
-		var $toggle = $("#toggle-put");
-		if ($toggle.attr("checked")) {
-			var $canvas = $(this);
-			$("<div class=\"tag\" contenteditable=\"true\"></div>").css({left: e.pageX - $canvas.offset().left, top: e.pageY - $canvas.offset().top}).appendTo(this).resizable().draggable().click(function() {
-				// resizable, draggableを使うと、
-				// クリック時にフォーカスさせないと、テキストが編集できない
-				$(this).focus();
-			});
-			$toggle.click();
-		}
+	$(".tag").resizable().draggable().click(function() {
+		// resizable, draggableを使うと、
+		// クリック時にフォーカスさせないと、テキストが編集できない
+		$(this).focus();
 	});
-	$(".tag").live("dblclick", function() {
-		$(this).attr("contenteditable", true);
+	$("#canvas").dblclick(function(e) {
+		var $canvas = $(this);
+		$("<div class=\"tag\" contenteditable=\"true\"></div>").css({left: e.pageX - $canvas.offset().left, top: e.pageY - $canvas.offset().top}).appendTo(this).resizable().draggable().click(function() {
+			// resizable, draggableを使うと、
+			// クリック時にフォーカスさせないと、テキストが編集できない
+			$(this).focus();
+		});
+	});
+	$("#save").button().click(function() {
+		var data = $(".tag").map(function() {
+			var $tag = $(this);
+			var position = $tag.position();
+			return position.left + "," + position.top + "," + $tag.width() + "," + $tag.height() + "," + $tag.text();
+		}).get();
+		$.post('<s:url action="save"/>', {data: data}).success(function() {
+			alert("保存しました");
+		}).error(function() {
+			alert("保存に失敗しました");
+		});
 	});
 });
 </script>
 </head>
 <body>
-<div id="canvas"></div>
-<div id="button-area"><input type="checkbox" id="toggle-put" /><label for="toggle-put">付箋</label></div>
+<div id="canvas">
+	<c:forEach var="tag" items="${tag}">
+		<div class="tag" contenteditable="true" style="left: ${tag.x}px; top: ${tag.y}px; width: ${tag.width}px; height: ${tag.height}px;">${f:escapeXml(tag.contents)}</div>
+	</c:forEach>
+</div>
+<div id="button-area"><button type="button" id="save">保存</button></div>
 </body>
 </html>

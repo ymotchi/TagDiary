@@ -1,12 +1,13 @@
 package com.motchi.tagdiary.dao;
 
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import com.motchi.tagdiary.common.annotation.SqlMapper;
 import com.motchi.tagdiary.dto.UserDto;
 
 @SqlMapper
-public interface CreateUserMapper {
+public interface UserMapper {
 
 	@Insert("INSERT INTO user (" +
 			"	iduser," +
@@ -17,6 +18,14 @@ public interface CreateUserMapper {
 			"	#{userId}," +
 			" 	#{hashedPassword}" +
 			")")
-	public void insertUser(UserDto userDto);
+	public void insertUser(UserDto user);
+
+	@Select("SELECT iduser AS idUser," +
+			"		userid AS userId," +
+			"		password AS hassedPassword" +
+			"  FROM user" +
+			" WHERE userid = #{userId}" +
+			"   AND password = #{hashedPassword}")
+	public UserDto selectUser(UserDto user);
 
 }

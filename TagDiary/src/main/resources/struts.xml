@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory"/>
+	<package name="tagdiary" namespace="/" extends="json-default">
+		<interceptors>
+			<interceptor name="login" class="com.motchi.tagdiary.common.interceptor.AuthenticationChecker"/>
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="login"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="loginStack"/>
+		<global-results>
+			<result name="noLogin" type="redirect">/login_init</result>
+		</global-results>
+	</package>
+</struts>

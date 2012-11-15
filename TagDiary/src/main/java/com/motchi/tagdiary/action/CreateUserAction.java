@@ -3,11 +3,13 @@ package com.motchi.tagdiary.action;
 import javax.annotation.Resource;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 
-import com.motchi.tagdiary.service.CreateUserService;
+import com.motchi.tagdiary.service.UserService;
 
+@ParentPackage("tagdiary")
 @Results({
 	@Result(name = "createUserInit", location = "create_user.jsp"),
 	@Result(name = "createUser", location = "/init", type = "redirect")
@@ -15,7 +17,7 @@ import com.motchi.tagdiary.service.CreateUserService;
 public class CreateUserAction {
 
 	@Resource
-	private CreateUserService createUserService;
+	private UserService userService;
 
 	public String userId;
 	public String password;
@@ -27,7 +29,7 @@ public class CreateUserAction {
 
 	@Action("/create_user")
 	public String createUser() {
-		createUserService.insertUser(userId, password);
+		userService.insertUser(userId, password);
 		return "createUser";
 	}
 
