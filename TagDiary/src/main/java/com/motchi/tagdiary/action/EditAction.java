@@ -27,9 +27,17 @@ public class EditAction {
 	@Resource
 	private TagService tagService;
 
-	public List<TagDto> tag;
+	private List<TagDto> tag;
 
-	public List<String> data;
+	private List<String> data;
+
+	public List<TagDto> getTag() {
+		return tag;
+	}
+
+	public void setData(List<String> data) {
+		this.data = data;
+	}
 
 	@Action("/edit")
 	public String editDiary() {

@@ -24,8 +24,21 @@ public class LoginAction implements SessionAware {
 
 	private Map<String, Object> session;
 
-	public String userId;
-	public String password;
+	private String userId;
+	private String password;
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
 	@Action("/login_init")
 	public String initDisplay() {
@@ -41,11 +54,6 @@ public class LoginAction implements SessionAware {
 			session.put(Constant.SESSION_USER_INFO, user);
 			return "login";
 		}
-	}
-
-	@Override
-	public void setSession(Map<String, Object> session) {
-		this.session = session;
 	}
 
 }
