@@ -42,7 +42,8 @@ public interface TagMapper {
 			"		height," +
 			"		contents" +
 			"  FROM tag" +
-			" WHERE iduser = #{idUser}")
+			" WHERE iduser = #{idUser}" +
+			" ORDER BY tagseq")
 	public List<TagDto> selectTags(int idUser);
 
 
